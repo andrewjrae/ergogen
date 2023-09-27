@@ -264,6 +264,9 @@ const footprint = exports._footprint = (points, net_indexer, component_indexer, 
     parsed_params.rot = point.r // to be deprecated
     parsed_params.xy = `${point.x} ${-point.y}`
     parsed_params.at = `(at ${point.x} ${-point.y} ${point.r})`
+    // also pass along the units
+    parsed_params.units = units
+    parsed_params.points = points
 
     const internal_xyfunc = (x, y, resist) => {
         const sign = resist ? 1 : (point.meta.mirrored ? -1 : 1)
