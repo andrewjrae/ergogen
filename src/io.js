@@ -20,10 +20,11 @@ exports.unpack = async (zip) => {
     const fps = zip.folder('footprints')
     const module_prefix = 'const module = {};\n\n'
     const module_suffix = '\n\nreturn module.exports;'
+    const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
     for (const fp of fps.file(/.*\.js$/)) {
         const name = fp.name.slice('footprints/'.length).split('.')[0]
         const text = await fp.async('string')
-        const parsed = new Function(module_prefix + text + module_suffix)()
+        const parsed = await new AsyncFunction(module_prefix + text + module_suffix)()
         // TODO: some sort of footprint validation?
         injections.push(['footprint', name, parsed])
     }
